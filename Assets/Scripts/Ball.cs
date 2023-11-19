@@ -7,6 +7,7 @@ public class Ball : MonoBehaviour
     Rigidbody2D rb;
     public float jumpSpeed;
     public float moveForce;
+    bool isGrounded;
 
     void Start()
     {
@@ -15,7 +16,7 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.velocity += Vector2.up * jumpSpeed;
         }
@@ -25,5 +26,28 @@ public class Ball : MonoBehaviour
 
         var ver = Input.GetAxisRaw("Vertical");
         rb.AddForce(new Vector2(ver, 0) * moveForce);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.name == "Teleporter")
+        {
+            FindObjectOfType<GameManager>().Win();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        isGrounded = true;
+
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            FindObjectOfType<GameManager>().Lose();
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        isGrounded = false;
     }
 }

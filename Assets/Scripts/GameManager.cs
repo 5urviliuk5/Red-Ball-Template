@@ -38,15 +38,19 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(levelName);
         hasWon = false;
         targetTransitionScale = 0;
+        if (hp <= 0)
+        {
+            SceneManager.LoadScene(levels[0]);
+        }
     }
 
     public void Lose()
     {
-        //hp--;
-        //SceneManager.LoadScene(currentLevel);
-        //if (hp == 0) 
-        //{
-        //    SceneManager.LoadScene(levels[0]);
-        //}
+        hp--;
+        SceneManager.LoadScene(currentLevel);
+        if (hp == 0) 
+        {
+            SceneManager.LoadScene(levels[0]);
+        }
     }
 }

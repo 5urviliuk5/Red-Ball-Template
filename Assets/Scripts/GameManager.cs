@@ -12,8 +12,14 @@ public class GameManager : MonoBehaviour
     float targetTransitionScale;
     public Transform transition;
 
+    AudioSource source;
+    public AudioClip winSound;
+    public AudioClip loseSound;
+    public AudioClip gameOverSound;
+
     void Start()
     {
+        source = GetComponent<AudioSource>();
         DontDestroyOnLoad(gameObject);
     }
 
@@ -30,6 +36,8 @@ public class GameManager : MonoBehaviour
         currentLevel++;
         targetTransitionScale = 40;
         Invoke("LoadNextScene", 1f);
+
+        source.PlayOneShot(winSound);
     }
 
     void LoadNextScene()
@@ -47,10 +55,17 @@ public class GameManager : MonoBehaviour
     public void Lose()
     {
         hp--;
-        SceneManager.LoadScene(currentLevel);
-        if (hp == 0) 
+        if (hp > 0)
         {
-            SceneManager.LoadScene(levels[0]);
+            source.PlayOneShot(loseSound);
+            Invoke("LoadNextScene", 1f);
+        }
+        else 
+        {
+            source.PlayOneShot(gameOverSound);
+            currentLevel = 0;
+            hp = 3;
+            Invoke("LoadNextScene", 1f);
         }
     }
 }

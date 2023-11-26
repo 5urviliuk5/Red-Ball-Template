@@ -7,6 +7,7 @@ public class Ball : MonoBehaviour
     Rigidbody2D rb;
     public float jumpSpeed;
     public float moveForce;
+    public float speedLimit = 10;
     bool isGrounded;
 
     void Start()
@@ -22,10 +23,17 @@ public class Ball : MonoBehaviour
         }
 
         var hor = Input.GetAxisRaw("Horizontal");
-        rb.AddForce(new Vector2(hor, 0) * moveForce);
+        rb.AddForce(new Vector2(hor, 0) * moveForce * Time.deltaTime);
 
-        var ver = Input.GetAxisRaw("Vertical");
-        rb.AddForce(new Vector2(ver, 0) * moveForce);
+        if (rb.velocity.x > speedLimit)
+        {
+            rb.velocity = new Vector2(speedLimit, rb.velocity.y);
+        }
+
+        if (rb.velocity.x < -speedLimit)
+        {
+            rb.velocity = new Vector2(-speedLimit, rb.velocity.y);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

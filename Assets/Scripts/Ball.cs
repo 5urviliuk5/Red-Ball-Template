@@ -9,9 +9,11 @@ public class Ball : MonoBehaviour
     public float moveForce;
     public float speedLimit = 10;
     bool isGrounded;
+    public GameObject gameManager;
 
     void Start()
     {
+        Instantiate(gameManager);
         rb = GetComponent<Rigidbody2D>();
     }
 

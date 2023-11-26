@@ -23,6 +23,11 @@ public class GameManager : MonoBehaviour
 
         source = GetComponent<AudioSource>();
         DontDestroyOnLoad(gameObject);
+
+        if (FindObjectsOfType<GameManager>().Length > 1)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Update()
